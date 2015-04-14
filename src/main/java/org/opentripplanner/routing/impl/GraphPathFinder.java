@@ -321,22 +321,26 @@ public class GraphPathFinder {
 
         /* Detect and report that most obnoxious of bugs: path reversal asymmetry. */
         Iterator<GraphPath> gpi = paths.iterator();
+        ArrayList<GraphPath> goodPaths = new ArrayList<>();
         while (gpi.hasNext()) {
             GraphPath graphPath = gpi.next();
             // TODO check, is it possible that arriveBy and time are modifed in-place by the search?
             if (request.arriveBy) {
                 if (graphPath.states.getLast().getTimeSeconds() > request.dateTime) {
                     LOG.error("A graph path arrives after the requested time. This implies a bug.");
-                    gpi.remove();
+                } else {
+                    goodPaths.add(graphPath);
                 }
             } else {
                 if (graphPath.states.getFirst().getTimeSeconds() < request.dateTime) {
                     LOG.error("A graph path leaves before the requested time. This implies a bug.");
-                    gpi.remove();
+                } else {
+                    goodPaths.add(graphPath);
                 }
             }
         }
-        return paths;
+
+        return goodPaths;
     }
 
     /**
@@ -344,36 +348,46 @@ public class GraphPathFinder {
      * If there are no intermediate places, issue a single request.
      */
     private List<GraphPath> getGraphPathsConsideringIntermediates (RoutingRequest request) {
-        if (request.hasIntermediatePlaces()) {
-            long time = request.dateTime;
-            GenericLocation from = request.from;
-            List<GenericLocation> places = Lists.newLinkedList(request.intermediatePlaces);
-            places.add(request.to);
-            request.clearIntermediatePlaces();
-            List<GraphPath> paths = new ArrayList<>();
+        long dateTimeOrig = request.dateTime;
+        GenericLocation fromOrig = request.from;
+        GenericLocation toOrig = request.to;
 
-            for (GenericLocation to : places) {
-                request.dateTime = time;
-                request.from = from;
-                request.to = to;
-                request.rctx = null;
-                request.setRoutingContext(router.graph);
-                // TODO request only one itinerary here
+        try {
+            if (request.hasIntermediatePlaces()) {
+                long time = request.dateTime;
+                GenericLocation from = request.from;
+                List<GenericLocation> places = Lists.newLinkedList(request.intermediatePlaces);
+                places.add(request.to);
+                request.clearIntermediatePlaces();
+                List<GraphPath> paths = new ArrayList<>();
 
-                List<GraphPath> partialPaths = getPaths(request);
-                if (partialPaths == null || partialPaths.size() == 0) {
-                    return null;
+                for (GenericLocation to : places) {
+                    request.dateTime = time;
+                    request.from = from;
+                    request.to = to;
+                    request.rctx = null;
+                    request.setRoutingContext(router.graph);
+                    // TODO request only one itinerary here
+
+                    List<GraphPath> partialPaths = getPaths(request);
+                    if (partialPaths == null || partialPaths.size() == 0) {
+                        return null;
+                    }
+
+                    GraphPath path = partialPaths.get(0);
+                    paths.add(path);
+                    from = to;
+                    time = path.getEndTime();
                 }
 
-                GraphPath path = partialPaths.get(0);
-                paths.add(path);
-                from = to;
-                time = path.getEndTime();
+                return Arrays.asList(joinPaths(paths));
+            } else {
+                return getPaths(request);
             }
-
-            return Arrays.asList(joinPaths(paths));
-        } else {
-            return getPaths(request);
+        } finally {
+            request.dateTime = dateTimeOrig;
+            request.from = fromOrig;
+            request.to = toOrig;
         }
     }
 
