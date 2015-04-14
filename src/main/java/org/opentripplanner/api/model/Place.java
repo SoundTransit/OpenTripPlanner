@@ -114,4 +114,14 @@ public class Place {
         this.arrival = arrival;
         this.departure = departure;
     }
+
+    public void setStopId(String stopId) {
+        if (stopId == null)
+            this.stopId = null;
+        else if (stopId.indexOf(':') == -1) {
+            this.stopId = new AgencyAndId("", stopId);
+        } else {
+            this.stopId = AgencyAndId.convertFromString(stopId, ':');
+        }
+    }
 }

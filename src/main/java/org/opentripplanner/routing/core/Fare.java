@@ -23,7 +23,7 @@ import java.util.HashMap;
 public class Fare {
 
     public static enum FareType {
-        regular, student, senior, tram, special
+        regular, student, youth, senior, tram, special
     }
 
     /**

@@ -62,7 +62,7 @@ public class PlannerError {
             LOG.error("exception planning trip: ", e);
             message = Message.SYSTEM_ERROR;
         }
-        this.setMsg(message);
+        this.setMessage(message);
         if (e instanceof VertexNotFoundException)
             this.setMissing(((VertexNotFoundException)e).getMissing());
     }
@@ -73,7 +73,7 @@ public class PlannerError {
     }
 
     public PlannerError(Message msg) {
-        setMsg(msg);
+        setMessage(msg);
     }
 
     public PlannerError(List<String> missing) {
@@ -85,9 +85,14 @@ public class PlannerError {
         this.msg = msg;
     }
 
-    public void setMsg(Message msg) {
-        this.msg = msg.get();
-        this.id  = msg.getId();
+    public void setMessage(Message message) {
+        this.message = message;
+        this.msg = message.get();
+        this.id  = message.getId();
+    }
+    
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     /**

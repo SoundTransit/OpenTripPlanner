@@ -194,6 +194,10 @@ public class WalkStep {
         absoluteDirection = AbsoluteDirection.values()[octant];
     }
 
+    public void setAbsoluteDirection(String direction) {
+        absoluteDirection = AbsoluteDirection.valueOf(direction);
+    }
+
     public void addAlerts(Collection<Alert> newAlerts) {
         if (newAlerts == null) {
             return;
