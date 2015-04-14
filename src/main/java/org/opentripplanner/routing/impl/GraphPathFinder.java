@@ -340,6 +340,12 @@ public class GraphPathFinder {
             }
         }
 
+        if (goodPaths.size() == 0) {
+            LOG.debug("No paths remain for: " + request.from + " : " + request.to);
+            request.rctx.debugOutput.finishedRendering(); // make sure we still report full search time
+            throw new PathNotFoundException();
+        }
+
         return goodPaths;
     }
 
