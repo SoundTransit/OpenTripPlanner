@@ -26,14 +26,16 @@ import org.opentripplanner.routing.alertpatch.Alert;
 import org.opentripplanner.routing.core.TraverseMode;
 import org.opentripplanner.util.model.EncodedPolylineBean;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
  /**
  * One leg of a trip -- that is, a temporally continuous piece of the journey that takes place on a
  * particular vehicle (or on foot).
  */
-
+@JsonInclude(Include.NON_NULL)
 public class Leg {
 
     /**
@@ -263,7 +265,7 @@ public class Leg {
      * @return Boolean true if the leg is a transit leg
      */
     public Boolean isTransitLeg() {
-        if (mode == null) return null;
+        if (mode == null) return false;
         else if (mode.equals(TraverseMode.WALK.toString())) return false;
         else if (mode.equals(TraverseMode.CAR.toString())) return false;
         else if (mode.equals(TraverseMode.BICYCLE.toString())) return false;
@@ -275,8 +277,14 @@ public class Leg {
      */
     @XmlElement
     @JsonSerialize
-    public double getDuration() {
-        return endTime.getTimeInMillis()/1000.0 - startTime.getTimeInMillis()/1000.0;
+    public long getDuration() {
+        return (endTime.getTimeInMillis() - startTime.getTimeInMillis())/1000;
+    }
+
+    @XmlElement
+    @JsonSerialize
+    public int getDistance() {
+        return distance.intValue();
     }
 
     public void addAlert(Alert alert) {

@@ -22,7 +22,11 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.opentripplanner.api.adapters.MapAdapter;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @XmlType
+@JsonInclude(Include.NON_NULL)
 public class TranslatedString implements Serializable {
     private static final long serialVersionUID = 2163930399727941628L;
 

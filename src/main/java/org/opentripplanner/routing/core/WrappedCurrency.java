@@ -16,11 +16,15 @@ package org.opentripplanner.routing.core;
 import java.util.Currency;
 import java.util.Locale;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * A Bean wrapper class for java.util.Currency 
  * @author novalis
  *
  */
+@JsonInclude(Include.NON_NULL)
 public class WrappedCurrency {
     private Currency value;
     

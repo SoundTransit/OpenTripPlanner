@@ -15,6 +15,10 @@ package org.opentripplanner.api.model;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class Note {
 	@XmlElement
 	public String text;

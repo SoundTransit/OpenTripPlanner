@@ -15,13 +15,16 @@ package org.opentripplanner.util.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * A list of coordinates encoded as a string.
  * 
  * See <a href="http://code.google.com/apis/maps/documentation/polylinealgorithm.html">Encoded
  * polyline algorithm format</a>
  */
-
+@JsonInclude(Include.NON_NULL)
 public class EncodedPolylineBean implements Serializable {
 
     private static final long serialVersionUID = 1L;

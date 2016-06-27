@@ -19,11 +19,14 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElementWrapper;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * A TripPlan is a set of ways to get from point A to point B at time T.
  */
+@JsonInclude(Include.NON_NULL)
 public class TripPlan {
 
     /**  The time and date of travel */
@@ -40,6 +43,8 @@ public class TripPlan {
     @JsonProperty(value="itineraries")
     public List<Itinerary> itinerary = new ArrayList<Itinerary>();
 
+    public List<String> summary = new ArrayList<String>();
+    
     public TripPlan() { }
     
     public TripPlan(Place from, Place to, Date date) {
@@ -50,5 +55,9 @@ public class TripPlan {
     
     public void addItinerary(Itinerary itinerary) {
         this.itinerary.add(itinerary);
+    }
+
+    public void addSummary(String s) {
+        this.summary.add(s);
     }
 }

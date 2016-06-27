@@ -28,7 +28,11 @@ import org.opentripplanner.routing.error.VertexNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /** This API response element represents an error in trip planning. */
+@JsonInclude(Include.NON_NULL)
 public class PlannerError {
 
     private static final Logger LOG = LoggerFactory.getLogger(PlannerError.class);

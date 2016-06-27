@@ -17,10 +17,11 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.opentripplanner.routing.graph.Graph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.google.common.collect.Lists;
 
 /**
@@ -31,6 +32,7 @@ import com.google.common.collect.Lists;
  * finishedPrecalculating and foundPaths are called in the SPTService implementations.
  */
 @XmlRootElement
+@JsonInclude(Include.NON_NULL)
 public class DebugOutput {
 
     private static final Logger LOG = LoggerFactory.getLogger(DebugOutput.class);

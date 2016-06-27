@@ -27,6 +27,8 @@ import org.opentripplanner.profile.BikeRentalStationInfo;
 import org.opentripplanner.routing.alertpatch.Alert;
 import org.opentripplanner.routing.graph.Edge;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Lists;
 
@@ -57,12 +59,18 @@ import com.google.common.collect.Lists;
  * everything else false <br/>
  * </p>
  * */
+@JsonInclude(Include.NON_NULL)
 public class WalkStep {
 
     /**
      * The distance in meters that this step takes.
      */
-    public double distance = 0;
+    public Double distance = 0.0;
+
+    /**
+     * When present, the literal instruction for this walk step 
+     */
+    public String literalInstruction;
 
     /**
      * The relative direction of this step.
@@ -111,8 +119,8 @@ public class WalkStep {
     public double lat;
 
     /**
-     * The elevation profile as a comma-separated list of x,y values. x is the distance from the start of the step, y is the elevation at this
-     * distance.
+     * The elevation profile as a comma-separated list of x,y values. x is the
+     * distance from the start of the step, y is the elevation at this distance.
      */
     @XmlTransient
     public List<P2<Double>> elevation;
@@ -140,17 +148,31 @@ public class WalkStep {
      */
     public transient BikeRentalStationInfo bikeRentalOnStation, bikeRentalOffStation;
 
+
+    public WalkStep(String literalInstruction) {
+        this.literalInstruction = literalInstruction;
+    }
+    
+    public WalkStep() {}
+
     public void setDirections(double lastAngle, double thisAngle, boolean roundabout) {
         relativeDirection = getRelativeDirection(lastAngle, thisAngle, roundabout);
         setAbsoluteDirection(thisAngle);
     }
 
     public String toString() {
-        String direction = absoluteDirection.toString();
+        String direction = "";
+        if (absoluteDirection != null) {
+            direction = absoluteDirection.toString();
+        }
         if (relativeDirection != null) {
             direction = relativeDirection.toString();
         }
-        return "WalkStep(" + direction + " on " + streetName + " for " + distance + ")";
+
+        if (literalInstruction != null) {
+            return "WalkStep (" + literalInstruction + ")";
+        }
+        return "WalkStep (" + direction + " on " + streetName + " for " + distance.intValue() + ")";
     }
 
     public static RelativeDirection getRelativeDirection(double lastAngle, double thisAngle,
@@ -187,6 +209,10 @@ public class WalkStep {
         } else {
             return RelativeDirection.HARD_LEFT;
         }
+    }
+
+    public int getDistance() {
+        return distance.intValue();
     }
 
     public void setAbsoluteDirection(double thisAngle) {

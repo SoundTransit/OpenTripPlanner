@@ -16,10 +16,14 @@ package org.opentripplanner.routing.core;
 import java.text.NumberFormat;
 import java.util.Currency;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * <strong>Fare support is very, very preliminary.</strong>
  *
  */
+@JsonInclude(Include.NON_NULL)
 public class Money implements Comparable<Money> {
 
     /**

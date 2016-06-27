@@ -24,8 +24,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.opentripplanner.api.model.TripPlan;
 import org.opentripplanner.api.model.error.PlannerError;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /** Represents a trip planner response, will be serialized into XML or JSON by Jersey */
 @XmlRootElement
+@JsonInclude(Include.NON_NULL)
 public class Response {
 
     /** A dictionary of the parameters provided in the request that triggered this response. */
@@ -76,5 +80,4 @@ public class Response {
     public void setError(PlannerError error) {
         this.error = error;
     }
-    
 }

@@ -24,9 +24,13 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import org.onebusaway.gtfs.model.calendar.CalendarServiceData;
 import org.opentripplanner.routing.core.Fare;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * An Itinerary is one complete way of getting from the start location to the end location.
  */
+@JsonInclude(Include.NON_NULL)
 public class Itinerary {
 
     /**
@@ -121,7 +125,11 @@ public class Itinerary {
             legs.remove(leg);
         }
     }
-    
+
+    public int getWalkDistance() {
+        return walkDistance.intValue();
+    }
+
     public void fixupDates(CalendarServiceData service) {
         TimeZone startTimeZone = null;
         TimeZone timeZone = null;

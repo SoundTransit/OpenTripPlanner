@@ -20,7 +20,11 @@ import java.util.HashSet;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @XmlType
+@JsonInclude(Include.NON_NULL)
 public class Alert implements Serializable {
     private static final long serialVersionUID = 8305126586053909836L;
 

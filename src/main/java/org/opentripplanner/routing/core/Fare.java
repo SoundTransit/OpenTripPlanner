@@ -15,11 +15,15 @@ package org.opentripplanner.routing.core;
 
 import java.util.HashMap;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * <p>
  * Fare is a set of fares for different classes of users.
  * </p>
  */
+@JsonInclude(Include.NON_NULL)
 public class Fare {
 
     public static enum FareType {
