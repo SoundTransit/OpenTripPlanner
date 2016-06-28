@@ -668,4 +668,5 @@
 
     </dependencies>
 
+    <description>Customizes certain classes to enable trip plan json response to be deserialized</description>
 </project>
